@@ -58,7 +58,8 @@ class HashTable:
             self.storage[index] = LinkedPair(key, value)
         else:
             # Collision error
-            print('Error: Collision')
+            print(f'Insert Error: Collision {key} {index}')
+            return 
 
 
     def remove(self, key):
@@ -70,20 +71,33 @@ class HashTable:
         Fill this in.
         '''
         # Loop through self.storage
-        for i in range(0, len(self.storage)):
-            # If None, pass
-            if self.storage[i] == None:
-                pass
-            # Check if key is in our storage
-            elif key == self.storage[i].key:
-                # If found, remove value
-                print(f'key {key}')
-                del(self.storage[i].value)
-                return key
-            # Not found error
-            else:
-                print('Error: Key not found')
-                return
+        # for i in range(0, len(self.storage)):
+        #     # If None, pass
+        #     if self.storage[i] == None:
+        #         pass
+        #     # Check if key is in our storage
+        #     elif key == self.storage[i].key:
+        #         # If found, remove value
+        #         print(f'Key being Deleted: {key}')
+        #         del(self.storage[i].value)
+        #         return key
+        #     # Not found error
+        #     else:
+        #         print('Error: Key not found')
+        #         return
+
+        index = self._hash_mod(key)
+        if self.storage[index] == None:
+            print('Remove Error: No value for given index')
+            return 
+        elif self.storage[index]:
+            print(f'Key being deleted is {key} {index}')
+            del(self.storage[index].value)
+            return key
+        else:
+            print('Remove Error: Value not found')
+            return  
+
 
     def retrieve(self, key):
         '''
@@ -93,7 +107,25 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        # for i in range(0, len(self.storage)):
+        #     # If None, pass
+        #     if self.storage[i] == None:
+        #         return None
+        #     # Check if key is in our storage
+        #     elif key == self.storage[i].key:
+        #         # If found, remove value
+        #         return self.storage[i].value
+        #     # Not found error
+        #     else:
+        #         print('Error: Cannot retrieve')
+        #         return
+
+        index = self._hash_mod(key)
+        if self.storage[index]:
+            if key is self.storage[index].key:
+                print(self.storage[index].value)
+        else:
+            return None
 
 
     def resize(self):
@@ -103,7 +135,13 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        self.capacity *= 2
+        new_storage = [None] * self.capacity
+
+        for i in range(len(self.storage)):
+            new_storage[i] = self.storage[i]
+
+        self.storage = new_storage 
 
 
 
@@ -115,8 +153,6 @@ if __name__ == "__main__":
     ht.insert("line_3", "Linked list saves the day!")
 
     print("")
-
-    ht.remove('line_1')
 
     # Test storing beyond capacity
     print(ht.retrieve("line_1"))
