@@ -51,8 +51,14 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-
+        # Hash_mod the key to find the index
+        index = self._hash_mod(key)
+        if self.storage[index] == None:
+            # Place value in that index
+            self.storage[index] = LinkedPair(key, value)
+        else:
+            # Collision error
+            print('Error: Collision')
 
 
     def remove(self, key):
@@ -63,8 +69,21 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-
+        # Loop through self.storage
+        for i in range(0, len(self.storage)):
+            # If None, pass
+            if self.storage[i] == None:
+                pass
+            # Check if key is in our storage
+            elif key == self.storage[i].key:
+                # If found, remove value
+                print(f'key {key}')
+                del(self.storage[i].value)
+                return key
+            # Not found error
+            else:
+                print('Error: Key not found')
+                return
 
     def retrieve(self, key):
         '''
@@ -96,6 +115,8 @@ if __name__ == "__main__":
     ht.insert("line_3", "Linked list saves the day!")
 
     print("")
+
+    ht.remove('line_1')
 
     # Test storing beyond capacity
     print(ht.retrieve("line_1"))
